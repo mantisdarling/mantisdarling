@@ -1,40 +1,46 @@
-# 👋 Hi! I'm Mantis.
+# Mantis 🕷️
+### CS undergrad exploring where AI, security, and policy collide.
 
-<!--
-  Profile README — minimal by design, intentional by choice.
-  If you're reading the source, you already know what's up.
--->
-
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=2800&pause=1200&color=00C8FF&center=true&vCenter=true&multiline=true&width=600&height=100&lines=CS+Student+%40+IIT+Madras;AI+%7C+Cybersecurity+%7C+Law+%7C+Strategy;Building.+Breaking.+Learning." alt="typing animation" />
-</p>
+I'm a Computer Science student at [IIT Madras](https://www.iitm.ac.in/), building at the intersection of AI systems, cybersecurity, and the policy questions neither field likes to answer.
+Most of what I build ends up here sooner or later this is essentially my open notebook.
 
 ---
 
-I'm a Computer Science student at [IIT Madras](https://www.iitm.ac.in/), exploring the edges where technology meets law, strategy, and society.
-I'm interested in AI systems, cybersecurity, and the policy questions neither field likes to answer.
-Since most of my experiments end up here one way or another, this is essentially my open notebook.
-Feel free to have a look around!
+## What I Do
+- Build and break AI systems to understand how they actually work
+- Dig into the policy and governance questions AI and cybersecurity raise
+- Recreate interesting websites for UI archaeology and learning
+- Document ongoing experiments as an open notebook
 
+---
+
+## Side Quest
 > ⚠️ **Side quest:** I occasionally recreate websites I find cool. Some call it cloning, I call it **UI archaeology** and **educational research.** 😆
 >
 > Some projects are finished. Some are abandoned. Some are held together by hope and a `TODO:` comment.
 
 ---
 
-### 🛠️ Tech Stack
+## Tech Stack
 
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=python,c,cpp,js,bash,linux,git,docker,tensorflow,fastapi&theme=dark" alt="tech stack icons" />
-</p>
+![Python](https://img.shields.io/badge/Python-000?style=for-the-badge&logo=python)
+![C](https://img.shields.io/badge/C-000?style=for-the-badge&logo=c)
+![Java](https://img.shields.io/badge/Java-000?style=for-the-badge&logo=openjdk)
+![JavaScript](https://img.shields.io/badge/JavaScript-000?style=for-the-badge&logo=javascript)
+![Bash](https://img.shields.io/badge/Bash-000?style=for-the-badge&logo=gnubash)
+![Linux](https://img.shields.io/badge/Linux-000?style=for-the-badge&logo=linux)
+![Git](https://img.shields.io/badge/Git-000?style=for-the-badge&logo=git)
+![Docker](https://img.shields.io/badge/Docker-000?style=for-the-badge&logo=docker)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-000?style=for-the-badge&logo=tensorflow)
+![FastAPI](https://img.shields.io/badge/FastAPI-000?style=for-the-badge&logo=fastapi)
 
 ---
 
-### 📊 A Little About Me
+## GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=mantisdarling&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" height="165" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mantisdarling&layout=compact&theme=tokyonight&hide_border=true" height="165" />
+  <img src="https://github-readme-stats.vercel.app/api?username=mantisdarling&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mantisdarling&layout=compact&theme=tokyonight&hide_border=true" />
 </p>
 
 <p align="center">
@@ -48,7 +54,9 @@ Feel free to have a look around!
 ---
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=mantisdarling&style=flat-square&color=00c8ff" alt="profile views" />
+  <img src="https://komarev.com/ghpvc/?username=mantisdarling&style=flat-square&color=00c8ff" />
 </p>
 
-<p align="center"><em>"The best way to understand a system is to try to break it."</em></p>
+---
+
+> *"The best way to understand a system is to try to break it."*
