@@ -222,29 +222,34 @@ async function generateCard() {
     ctx.fillText("mantisdarling's Profile", 120, 50);
     ctx.restore();
 
-    // ── 8. Details (label: value format like Abel) ──────────────────────────
+    // ── 8. Details (exact Abel style - all values same cyan) ──────────────
     const LABEL_X = 120;
-    const VALUE_X = 200;
+    const VALUE_X = 198;
+    const LABEL_COLOR = '#8892a4';   // same muted gray as Abel
+    const VALUE_COLOR = '#00d4e8';   // same bright teal/cyan as Abel
     const rows = [
-      { label: 'name:',    value: 'Mantis',                  color: '#ffffff' },
-      { label: 'cursus:',  value: 'AI / CyberSec',           color: '#38bdf8' },
-      { label: 'grade:',   value: 'Sensei',                  color: '#38bdf8' },
-      { label: 'connect:', value: 'bsky.app/@mantisdarling', color: '#818cf8' },
+      { label: 'name:',    value: 'Mantis'                  },
+      { label: 'cursus:',  value: 'AI / CyberSec'           },
+      { label: 'grade:',   value: 'Sensei'                  },
+      { label: 'connect:', value: 'bsky.app/@mantisdarling'  },
     ];
     rows.forEach((r, i) => {
       const y = 72 + i * 28;
-      // Label
-      ctx.font      = '12px "Segoe UI", Arial, sans-serif';
+      // Label — muted gray, regular weight
+      ctx.save();
+      ctx.font      = '13px "Segoe UI", Arial, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = LABEL_COLOR;
       ctx.shadowBlur = 0;
       ctx.fillText(r.label, LABEL_X, y);
-      // Value
+      ctx.restore();
+      // Value — bright cyan, bold, slight glow
       ctx.save();
-      ctx.font      = 'bold 13px "Segoe UI", Arial, sans-serif';
-      ctx.fillStyle = r.color;
-      ctx.shadowColor = r.color;
-      ctx.shadowBlur  = r.label === 'name:' ? 0 : 10;
+      ctx.font       = 'bold 13px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle  = VALUE_COLOR;
+      ctx.shadowColor = VALUE_COLOR;
+      ctx.shadowBlur  = 8;
+      ctx.textAlign  = 'left';
       ctx.fillText(r.value, VALUE_X, y);
       ctx.restore();
     });
