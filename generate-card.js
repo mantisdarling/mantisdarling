@@ -202,21 +202,16 @@ async function generateCard() {
       ctx.restore();
     }
 
-    // ── 6. IITM logo ─────────────────────────────────────────────────────────
-    const lx = W - 40, ly = 40, lr = 26;
+    // ── 6. IITM logo (no border, bigger for quality) ─────────────────────────
+    const lx = W - 42, ly = 42, lr = 34;
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = BORDER_COLOR;
-    ctx.lineWidth   = 2;
-    ctx.shadowColor = BORDER_COLOR;
-    ctx.shadowBlur  = 10;
-    ctx.stroke();
     ctx.restore();
     if (logo) {
       ctx.save();
-      ctx.beginPath(); ctx.arc(lx, ly, lr - 2, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(logo, lx - lr + 2, ly - lr + 2, (lr - 2) * 2, (lr - 2) * 2);
+      ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.clip();
+      ctx.drawImage(logo, lx - lr, ly - lr, lr * 2, lr * 2);
       ctx.restore();
     }
 
