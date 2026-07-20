@@ -34,7 +34,7 @@ I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/
 
 ---
 
-## `./42_progress`
+## `./xpider_card`
 
 <p align="center">
   <img src="./card.svg" alt="Profile Card" />
