@@ -1,17 +1,12 @@
 # Mantis 🕷️
 
+CS undergrad exploring where AI, security, and policy collide.
+I'm a Computer Science student at IIT Madras, building at the intersection of AI systems, cybersecurity, and the policy questions neither field likes to answer. Most of what I build ends up here sooner or later this is essentially my open notebook.
+
 <p align="center">
   <img src="./terminal.svg" alt="Terminal" />
 </p>
 
-
----
-
-## What I Do
-- Build and break AI systems to understand how they actually work
-- Dig into the policy and governance questions AI and cybersecurity raise
-- Recreate interesting websites for UI archaeology and learning
-- Document ongoing experiments as an open notebook
 
 ---
 
