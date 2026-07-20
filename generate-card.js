@@ -161,9 +161,9 @@ async function generateCard() {
 
     // ── 2. Dark overlay ─────────────────────────────────────────────────────
     const overlay = ctx.createLinearGradient(0, 0, W, 0);
-    overlay.addColorStop(0,    'rgba(0,0,0,0.88)');
-    overlay.addColorStop(0.50, 'rgba(0,0,0,0.72)');
-    overlay.addColorStop(1,    'rgba(0,0,0,0.30)');
+    overlay.addColorStop(0,    'rgba(0,0,0,0.62)');
+    overlay.addColorStop(0.50, 'rgba(0,0,0,0.45)');
+    overlay.addColorStop(1,    'rgba(0,0,0,0.10)');
     ctx.fillStyle = overlay;
     roundRect(ctx, 0, 0, W, H, 16);
     ctx.fill();
