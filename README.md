@@ -1,7 +1,7 @@
 # Mantis 🕷️
 
 CS undergrad exploring where AI, security, and policy collide.
-I'm a Computer Science student at [IIT Madras](https://www.iitm.ac.in/the-institute/about-iit-madras/overview), building at the intersection of AI systems, cybersecurity, and the policy questions neither field likes to answer. Most of what I build ends up here sooner or later this is essentially my open notebook.
+I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/about-iit-madras/overview">IIT Madras</a>, building at the intersection of AI systems, cybersecurity, and the policy questions neither field likes to answer. Most of what I build ends up here sooner or later this is essentially my open notebook.
 
 <p align="center">
   <img src="./terminal.svg" alt="Terminal" />
@@ -35,8 +35,7 @@ I'm a Computer Science student at [IIT Madras](https://www.iitm.ac.in/the-instit
 ## GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=mantisdarling&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mantisdarling&layout=compact&theme=tokyonight&hide_border=true" />
+  <img src="https://streak-stats.demolab.com?user=mantisdarling&theme=tokyonight&hide_border=true" />
 </p>
 
 <p align="center">
