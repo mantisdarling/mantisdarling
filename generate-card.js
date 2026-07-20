@@ -143,7 +143,6 @@ async function generateCard() {
   encoder.setRepeat(0);
   encoder.setDelay(FRAME_DELAY * 10);
   encoder.setQuality(1);  // best quality
-  encoder.setTransparent(0xFF00FF); // magenta = transparent (rounded corners)
 
   const canvas = createCanvas(W * SCALE, H * SCALE);
   const ctx    = canvas.getContext('2d');
@@ -155,20 +154,18 @@ async function generateCard() {
   ctx.antialias = 'subpixel';
 
   for (let f = 0; f < FRAMES; f++) {
-    // Fill canvas with magenta (transparent chroma key) — corners stay transparent
-    ctx.fillStyle = '#FF00FF';
-    ctx.fillRect(0, 0, W, H);
-
-    // Clip ALL drawing to rounded card shape (18px like masenjo's card)
-    ctx.save();
-    roundRect(ctx, 0, 0, W, H, 18); ctx.clip();
+    ctx.clearRect(0, 0, W, H);
 
     // ── 1. Background ───────────────────────────────────────────────────────
     if (bg) {
+      ctx.save();
+      roundRect(ctx, 0, 0, W, H, 14);
+      ctx.clip();
       ctx.drawImage(bg, 0, 0, W, H);
+      ctx.restore();
     } else {
       ctx.fillStyle = '#050510';
-      ctx.fillRect(0, 0, W, H);
+      roundRect(ctx, 0, 0, W, H, 14); ctx.fill();
     }
 
     // ── 2. Dark overlay ─────────────────────────────────────────────────────
@@ -177,7 +174,7 @@ async function generateCard() {
     overlay.addColorStop(0.55, 'rgba(0,0,0,0.60)');
     overlay.addColorStop(1,    'rgba(0,0,0,0.18)');
     ctx.fillStyle = overlay;
-    ctx.fillRect(0, 0, W, H);
+    roundRect(ctx, 0, 0, W, H, 14); ctx.fill();
 
     // ── 3. Animated spider web ───────────────────────────────────────────────
     drawWeb(ctx, f);
@@ -311,8 +308,6 @@ async function generateCard() {
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText('I  I  T  M', W - 44, 257);
     ctx.restore();
-
-    ctx.restore(); // end rounded card clip
 
     // Add frame
     encoder.addFrame(ctx);
