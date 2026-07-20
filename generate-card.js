@@ -239,57 +239,125 @@ async function generateCard() {
 }
 
 function drawWebLines(ctx, W, H) {
-  // Red spider-web style diagonal lines
-  const lines = [
-    // Main diagonals from corners
-    { x1: 0,   y1: 0,   x2: W*0.6, y2: H,      alpha: 0.12 },
-    { x1: 0,   y1: 0,   x2: W*0.4, y2: H,      alpha: 0.08 },
-    { x1: 0,   y1: 0,   x2: W,     y2: H*0.7,  alpha: 0.10 },
-    { x1: W,   y1: 0,   x2: 0,     y2: H*0.6,  alpha: 0.09 },
-    { x1: W,   y1: 0,   x2: W*0.3, y2: H,      alpha: 0.07 },
-    // Cross lines
-    { x1: 0,   y1: H*0.3, x2: W*0.5, y2: 0,    alpha: 0.06 },
-    { x1: 0,   y1: H*0.6, x2: W*0.4, y2: 0,    alpha: 0.05 },
-    { x1: W,   y1: H*0.4, x2: W*0.5, y2: H,    alpha: 0.06 },
-    // Horizontal faint lines
-    { x1: 0, y1: H*0.25, x2: W, y2: H*0.20, alpha: 0.04 },
-    { x1: 0, y1: H*0.50, x2: W, y2: H*0.55, alpha: 0.04 },
-    { x1: 0, y1: H*0.75, x2: W, y2: H*0.70, alpha: 0.04 },
+  // Red lightning / thunder bolt streaks
+  const bolts = [
+    // Top-left to mid-right
+    [
+      {x: 0,     y: 40},
+      {x: 80,    y: 55},
+      {x: 110,   y: 35},
+      {x: 200,   y: 70},
+      {x: 230,   y: 50},
+      {x: 320,   y: 90},
+      {x: 360,   y: 65},
+      {x: 460,   y: 110},
+      {x: 500,   y: 85},
+      {x: W,     y: 120},
+    ],
+    // Mid to bottom
+    [
+      {x: 0,     y: 160},
+      {x: 60,    y: 175},
+      {x: 100,   y: 155},
+      {x: 180,   y: 195},
+      {x: 220,   y: 170},
+      {x: 310,   y: 210},
+      {x: 360,   y: 185},
+      {x: 440,   y: 225},
+      {x: 500,   y: 200},
+      {x: W,     y: 235},
+    ],
+    // Bottom area
+    [
+      {x: 20,    y: H - 30},
+      {x: 70,    y: H - 15},
+      {x: 110,   y: H - 35},
+      {x: 190,   y: H - 10},
+      {x: 240,   y: H - 30},
+      {x: 330,   y: H - 8},
+      {x: 390,   y: H - 28},
+      {x: 500,   y: H - 12},
+      {x: W,     y: H - 20},
+    ],
+    // Short burst top-right
+    [
+      {x: W - 100, y: 0},
+      {x: W - 80,  y: 20},
+      {x: W - 60,  y: 8},
+      {x: W - 30,  y: 35},
+      {x: W,       y: 20},
+    ],
+    // Diagonal slash left side
+    [
+      {x: 0,   y: 80},
+      {x: 25,  y: 105},
+      {x: 15,  y: 125},
+      {x: 45,  y: 155},
+      {x: 30,  y: 175},
+      {x: 60,  y: 210},
+    ],
   ];
 
-  lines.forEach(l => {
+  bolts.forEach((bolt, bi) => {
+    const alpha = [0.55, 0.45, 0.35, 0.50, 0.40][bi];
+    const width = [1.8, 1.5, 1.2, 1.6, 1.3][bi];
+
+    // Outer glow pass
     ctx.save();
-    ctx.strokeStyle = `rgba(220, 0, 0, ${l.alpha})`;
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = `rgba(255, 0, 0, ${alpha * 0.3})`;
+    ctx.lineWidth = width + 4;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.shadowColor = '#ff0000';
+    ctx.shadowBlur = 16;
     ctx.beginPath();
-    ctx.moveTo(l.x1, l.y1);
-    ctx.lineTo(l.x2, l.y2);
+    bolt.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+    ctx.restore();
+
+    // Inner bright core
+    ctx.save();
+    ctx.strokeStyle = `rgba(255, 60, 60, ${alpha})`;
+    ctx.lineWidth = width;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.shadowColor = '#ff2222';
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    bolt.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+    ctx.restore();
+
+    // Bright white-red center highlight
+    ctx.save();
+    ctx.strokeStyle = `rgba(255, 180, 180, ${alpha * 0.6})`;
+    ctx.lineWidth = width * 0.4;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    bolt.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
     ctx.stroke();
     ctx.restore();
   });
 
-  // Concentric arc web segments (top-left corner)
-  [60, 120, 180, 240].forEach(r => {
+  // Scattered small spark dots along bolts
+  const sparks = [
+    {x: 80,  y: 55},  {x: 230, y: 50},  {x: 360, y: 65},
+    {x: 180, y: 195}, {x: 360, y: 185}, {x: 500, y: 200},
+    {x: 110, y: H-35},{x: 330, y: H-8},
+  ];
+  sparks.forEach(s => {
     ctx.save();
-    ctx.strokeStyle = `rgba(200, 0, 0, ${0.06 - r*0.0001})`;
-    ctx.lineWidth = 1;
+    ctx.fillStyle = 'rgba(255, 100, 100, 0.9)';
+    ctx.shadowColor = '#ff0000';
+    ctx.shadowBlur = 10;
     ctx.beginPath();
-    ctx.arc(0, 0, r, 0, Math.PI * 0.6);
-    ctx.stroke();
-    ctx.restore();
-  });
-
-  // Concentric arc web segments (bottom-right corner)
-  [60, 120, 180].forEach(r => {
-    ctx.save();
-    ctx.strokeStyle = `rgba(200, 0, 0, ${0.05})`;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(W, H, r, Math.PI, Math.PI * 1.6);
-    ctx.stroke();
+    ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
   });
 }
+
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
