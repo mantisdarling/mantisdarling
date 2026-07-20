@@ -5,9 +5,9 @@ const path = require('path');
 
 const W = 580;           // logical width
 const H = 300;           // logical height
-const SCALE = 2;         // render at 2x for retina sharpness
-const FRAMES = 20;       // fewer frames = smaller file
-const FRAME_DELAY = 12;  // 120ms per frame = smooth ~8fps loop
+const SCALE = 3;         // render at 3x for maximum sharpness
+const FRAMES = 12;       // fewer frames = smaller file
+const FRAME_DELAY = 16;  // 160ms per frame = smooth loop
 const BORDER_COLOR = '#8844ff';
 
 // Spider web center (right side, not covering text)
