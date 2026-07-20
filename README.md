@@ -34,4 +34,12 @@ I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/
 
 ---
 
+## `./42_progress`
+
+<p align="center">
+  <img src="./card.svg" alt="Profile Card" />
+</p>
+
+---
+
 > *"The best way to understand a system is to try to break it."*
