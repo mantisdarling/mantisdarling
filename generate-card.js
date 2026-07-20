@@ -3,19 +3,18 @@ const GIFEncoder = require('gif-encoder-2');
 const fs = require('fs');
 const path = require('path');
 
-const W = 700;
-const H = 340;
-const FRAMES = 30;          // number of animation frames
-const FRAME_DELAY = 8;      // centiseconds per frame (8 = 80ms → smooth ~12fps loop)
-const BORDER_COLOR = '#8844ff';  // Purple border
+const W = 580;
+const H = 240;
+const FRAMES = 30;
+const FRAME_DELAY = 8;
+const BORDER_COLOR = '#8844ff';
 
-// ── Spider web definition ────────────────────────────────────────────────────
-// Center of web (top-right area, not covering text)
-const WEB_CX = 560;
-const WEB_CY = 170;
-const SPOKES = 12;           // number of radial lines
-const RINGS  = 5;            // number of concentric circles
-const MAX_R  = 220;          // max radius
+// Spider web center (right side, not covering text)
+const WEB_CX = 460;
+const WEB_CY = 120;
+const SPOKES = 12;
+const RINGS  = 5;
+const MAX_R  = 180;
 
 function getWebPoints() {
   // Compute spoke endpoints and ring intersection points
@@ -180,7 +179,7 @@ async function generateCard() {
     ctx.shadowBlur = 0;
 
     // ── 5. Avatar ────────────────────────────────────────────────────────────
-    const ax = 62, ay = 100, ar = 54;
+    const ax = 55, ay = 82, ar = 42;
     ctx.save();
     ctx.shadowColor = BORDER_COLOR;
     ctx.shadowBlur  = 16;
@@ -196,7 +195,7 @@ async function generateCard() {
     }
 
     // ── 6. IITM logo ─────────────────────────────────────────────────────────
-    const lx = W - 48, ly = 42, lr = 28;
+    const lx = W - 40, ly = 34, lr = 24;
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.fill();
@@ -217,51 +216,50 @@ async function generateCard() {
     ctx.save();
     ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 10;
     ctx.fillStyle   = '#ffffff';
-    ctx.font        = 'bold 28px "Segoe UI", Arial, sans-serif';
+    ctx.font        = 'bold 24px "Segoe UI", Arial, sans-serif';
     ctx.textAlign   = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillText('Mantis', 140, 82);
+    ctx.fillText('Mantis', 115, 58);
     ctx.restore();
 
     // Separator under name
-    const sep = ctx.createLinearGradient(140, 0, 360, 0);
-    sep.addColorStop(0, BORDER_COLOR); sep.addColorStop(1, 'rgba(0,204,255,0)');
-    ctx.fillStyle = sep; ctx.fillRect(140, 88, 220, 1.5);
+    const sep = ctx.createLinearGradient(115, 0, 310, 0);
+    sep.addColorStop(0, BORDER_COLOR); sep.addColorStop(1, 'rgba(136,68,255,0)');
+    ctx.fillStyle = sep; ctx.fillRect(115, 64, 190, 1.5);
 
     // ── 8. Details ───────────────────────────────────────────────────────────
     const rows = [
-      { label: 'name',    value: 'Mantis',                  color: '#f1f5f9' },
       { label: 'cursus',  value: 'AI / CyberSec',           color: '#f1f5f9' },
       { label: 'grade',   value: 'Sensei',                  color: '#f1f5f9' },
-      { label: 'connect', value: 'bsky.app/@mantisdarling', color: '#66ddff' },
+      { label: 'connect', value: 'bsky.app/@mantisdarling', color: '#aa88ff' },
     ];
     rows.forEach((r, i) => {
-      const y = 112 + i * 25;
-      ctx.font      = '13px "Segoe UI", Arial, sans-serif';
+      const y = 78 + i * 22;
+      ctx.font      = '12px "Segoe UI", Arial, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#9ca3af'; ctx.fillText(r.label, 140, y);
+      ctx.fillStyle = '#9ca3af'; ctx.fillText(r.label, 115, y);
       ctx.fillStyle = r.color;
       if (r.label === 'connect') { ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 6; }
-      ctx.fillText(r.value, 215, y);
+      ctx.fillText(r.value, 178, y);
       if (r.label === 'connect') ctx.restore();
     });
 
     // ── 9. Divider ────────────────────────────────────────────────────────────
-    const div = ctx.createLinearGradient(30, 0, W - 30, 0);
-    div.addColorStop(0, BORDER_COLOR); div.addColorStop(1, 'rgba(0,204,255,0)');
-    ctx.fillStyle = div; ctx.fillRect(30, 210, W - 60, 1);
+    const div = ctx.createLinearGradient(22, 0, W - 22, 0);
+    div.addColorStop(0, BORDER_COLOR); div.addColorStop(1, 'rgba(136,68,255,0)');
+    ctx.fillStyle = div; ctx.fillRect(22, 148, W - 44, 1);
 
     // ── 10. Progress ─────────────────────────────────────────────────────────
-    ctx.fillStyle = '#9ca3af'; ctx.font = '11px "Segoe UI", Arial';
-    ctx.textAlign = 'left';  ctx.fillText('LEVEL PROGRESS', 30, 232);
-    ctx.fillStyle = BORDER_COLOR; ctx.textAlign = 'right'; ctx.fillText('69%', W - 30, 232);
+    ctx.fillStyle = '#9ca3af'; ctx.font = '10px "Segoe UI", Arial';
+    ctx.textAlign = 'left';  ctx.fillText('LEVEL PROGRESS', 22, 166);
+    ctx.fillStyle = BORDER_COLOR; ctx.textAlign = 'right'; ctx.fillText('69%', W - 22, 166);
 
     // Track
-    ctx.fillStyle = 'rgba(0,0,0,0.5)'; roundRect(ctx, 30, 238, W - 60, 10, 5); ctx.fill();
+    ctx.fillStyle = 'rgba(0,0,0,0.5)'; roundRect(ctx, 22, 172, W - 44, 9, 4); ctx.fill();
     // Fill
-    const bf = ctx.createLinearGradient(30, 0, 30 + (W - 60) * 0.69, 0);
-    bf.addColorStop(0, '#006688'); bf.addColorStop(1, BORDER_COLOR);
+    const bf = ctx.createLinearGradient(22, 0, 22 + (W - 44) * 0.69, 0);
+    bf.addColorStop(0, '#440088'); bf.addColorStop(1, BORDER_COLOR);
     ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 8;
-    ctx.fillStyle = bf; roundRect(ctx, 30, 238, (W - 60) * 0.69, 10, 5); ctx.fill();
+    ctx.fillStyle = bf; roundRect(ctx, 22, 172, (W - 44) * 0.69, 9, 4); ctx.fill();
     ctx.restore();
 
     // ── 11. Badges ───────────────────────────────────────────────────────────
@@ -270,17 +268,17 @@ async function generateCard() {
     ctx.strokeStyle = BORDER_COLOR; ctx.lineWidth = 1.5;
     ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 8;
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    roundRect(ctx, 30, 265, 90, 30, 6); ctx.fill(); ctx.stroke();
+    roundRect(ctx, 22, 195, 78, 26, 5); ctx.fill(); ctx.stroke();
     ctx.restore();
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px "Segoe UI", Arial';
-    ctx.textAlign = 'center'; ctx.fillText('XPIDER', 75, 284);
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px "Segoe UI", Arial';
+    ctx.textAlign = 'center'; ctx.fillText('XPIDER', 61, 212);
 
     // 2205 IITM
     ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 6;
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 16px "Courier New", monospace';
-    ctx.textAlign = 'right'; ctx.fillText('2205', W - 30, 275);
-    ctx.fillStyle = BORDER_COLOR; ctx.font = '11px "Courier New", monospace';
-    ctx.fillText('IITM', W - 30, 291);
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 14px "Courier New", monospace';
+    ctx.textAlign = 'right'; ctx.fillText('2205', W - 22, 207);
+    ctx.fillStyle = BORDER_COLOR; ctx.font = '10px "Courier New", monospace';
+    ctx.fillText('IITM', W - 22, 221);
     ctx.restore();
 
     // ── 12. Card border ───────────────────────────────────────────────────────

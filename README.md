@@ -37,7 +37,7 @@ I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/
 ## `./xpider_card`
 
 <p align="center">
-  <img src="./xpider.gif" alt="Xpider Card" />
+  <img src="./xpider2.gif" alt="Xpider Card" />
 </p>
 
 ---
