@@ -159,33 +159,53 @@ async function generateCard() {
     // ── 1. Background ───────────────────────────────────────────────────────
     if (bg) {
       ctx.save();
-      roundRect(ctx, 0, 0, W, H, 16);
+      roundRect(ctx, 0, 0, W, H, 14);
       ctx.clip();
       ctx.drawImage(bg, 0, 0, W, H);
       ctx.restore();
     } else {
-      ctx.fillStyle = '#0a0000';
-      roundRect(ctx, 0, 0, W, H, 16);
-      ctx.fill();
+      ctx.fillStyle = '#050510';
+      roundRect(ctx, 0, 0, W, H, 14); ctx.fill();
     }
 
     // ── 2. Dark overlay ─────────────────────────────────────────────────────
     const overlay = ctx.createLinearGradient(0, 0, W, 0);
-    overlay.addColorStop(0,    'rgba(0,0,0,0.45)');
-    overlay.addColorStop(0.40, 'rgba(0,0,0,0.25)');
-    overlay.addColorStop(1,    'rgba(0,0,0,0.00)');
+    overlay.addColorStop(0,    'rgba(0,0,0,0.82)');
+    overlay.addColorStop(0.55, 'rgba(0,0,0,0.60)');
+    overlay.addColorStop(1,    'rgba(0,0,0,0.18)');
     ctx.fillStyle = overlay;
-    roundRect(ctx, 0, 0, W, H, 16);
-    ctx.fill();
+    roundRect(ctx, 0, 0, W, H, 14); ctx.fill();
 
     // ── 3. Animated spider web ───────────────────────────────────────────────
     drawWeb(ctx, f);
-
-    // ── 4. No border bars — clean card like Abel's ──────────────────────────
     ctx.shadowBlur = 0;
 
-    // ── 5. Avatar (rounded square like Abel's) ───────────────────────────────
-    const avX = 18, avY = 40, avW = 90, avH = 110, avR = 10;
+    // ── 4. Title — top left (like masenjo's Profile) ─────────────────────────
+    ctx.save();
+    ctx.fillStyle   = '#ffffff';
+    ctx.font        = 'bold 20px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign   = 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.shadowColor = 'rgba(255,255,255,0.25)';
+    ctx.shadowBlur  = 4;
+    ctx.fillText("mantisdarling's Profile", 18, 32);
+    ctx.restore();
+
+    // ── 5. IITM badge — top right (like UM6P badge in screenshot) ────────────
+    const bdgW = 58, bdgH = 24, bdgX = W - bdgW - 14, bdgY = 12;
+    ctx.save();
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
+    ctx.fillStyle   = 'rgba(0,0,0,0.55)';
+    roundRect(ctx, bdgX, bdgY, bdgW, bdgH, 5);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px "Courier New", monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('IITM', bdgX + bdgW / 2, bdgY + bdgH / 2);
+    ctx.restore();
+
+    // ── 6. Avatar — square rounded, left side below title ────────────────────
+    const avX = 18, avY = 46, avW = 100, avH = 130, avR = 8;
     if (avatar) {
       ctx.save();
       roundRect(ctx, avX, avY, avW, avH, avR);
@@ -196,119 +216,98 @@ async function generateCard() {
       ctx.save();
       ctx.fillStyle = '#1a0020';
       roundRect(ctx, avX, avY, avW, avH, avR); ctx.fill();
-      ctx.fillStyle = BORDER_COLOR;
+      ctx.fillStyle = '#00d4e8';
       ctx.font = 'bold 36px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('M', avX + avW/2, avY + avH/2);
+      ctx.fillText('M', avX + avW / 2, avY + avH / 2);
       ctx.restore();
     }
 
-    // ── 6. IITM logo (no border, bigger for quality) ─────────────────────────
-    const lx = W - 42, ly = 42, lr = 34;
-    ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-    if (logo) {
-      ctx.save();
-      ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(logo, lx - lr, ly - lr, lr * 2, lr * 2);
-      ctx.restore();
-    }
-
-    // ── 7. Title ──────────────────────────────────────────────────────────────
-    ctx.save();
-    ctx.fillStyle   = '#ffffff';
-    ctx.font        = 'bold 18px "Segoe UI", Arial, sans-serif';
-    ctx.textAlign   = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.shadowColor = 'rgba(200,200,255,0.6)'; ctx.shadowBlur = 8;
-    ctx.fillText("mantisdarling's Profile", 120, 50);
-    ctx.restore();
-
-    // ── 8. Details (exact Abel style - all values same cyan) ──────────────
-    const LABEL_X = 120;
-    const VALUE_X = 198;
-    const LABEL_COLOR = '#8892a4';   // same muted gray as Abel
-    const VALUE_COLOR = '#00d4e8';   // same bright teal/cyan as Abel
+    // ── 7. Text rows — right of avatar, like masenjo's layout ────────────────
+    const LABEL_X   = 132;
+    const VALUE_X   = 208;
+    const LABEL_CLR = '#8892a4';
+    const VALUE_CLR = '#00d4e8';
     const rows = [
       { label: 'name:',    value: 'Mantis'                  },
       { label: 'cursus:',  value: 'AI / CyberSec'           },
-      { label: 'grade:',   value: 'Sensei'                  },
+      { label: 'grade:',   value: 'Sensei'                   },
       { label: 'connect:', value: 'bsky.app/@mantisdarling'  },
     ];
     rows.forEach((r, i) => {
-      const y = 72 + i * 28;
-      // Label — muted gray, regular weight
+      const y = 72 + i * 27;
       ctx.save();
-      ctx.font      = '13px "Segoe UI", Arial, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillStyle = LABEL_COLOR;
-      ctx.shadowBlur = 0;
+      ctx.font = '13px "Segoe UI", Arial, sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = LABEL_CLR; ctx.shadowBlur = 0;
       ctx.fillText(r.label, LABEL_X, y);
       ctx.restore();
-      // Value — bright cyan, bold, slight glow
       ctx.save();
-      ctx.font       = 'bold 13px "Segoe UI", Arial, sans-serif';
-      ctx.fillStyle  = VALUE_COLOR;
-      ctx.shadowColor = VALUE_COLOR;
-      ctx.shadowBlur  = 8;
-      ctx.textAlign  = 'left';
+      ctx.font = 'bold 13px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = VALUE_CLR;
+      ctx.shadowColor = VALUE_CLR; ctx.shadowBlur = 8;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
       ctx.fillText(r.value, VALUE_X, y);
       ctx.restore();
     });
 
-    // ── 9. Divider ────────────────────────────────────────────────────────────
-    const div = ctx.createLinearGradient(22, 0, W - 22, 0);
-    div.addColorStop(0, '#38bdf8'); div.addColorStop(0.5, '#818cf8'); div.addColorStop(1, 'rgba(56,189,248,0)');
-    ctx.fillStyle = div; ctx.fillRect(22, 190, W - 44, 1);
-
-    // ── 10. Progress bar (text INSIDE like Abel) ──────────────────────────────
-    const barX = 22, barY = 202, barW = W - 44, barH = 26, barRadius = 5;
+    // ── 8. Progress bar — full width below avatar section ────────────────────
+    const barX = 18, barY = 192, barW = W - 36, barH = 30, barR = 6;
     // Track
-    ctx.fillStyle = 'rgba(15,15,30,0.75)';
-    roundRect(ctx, barX, barY, barW, barH, barRadius); ctx.fill();
-    // Fill 69%
+    ctx.fillStyle = 'rgba(10,10,25,0.80)';
+    roundRect(ctx, barX, barY, barW, barH, barR); ctx.fill();
+    // Fill
     const fillW = barW * 0.69;
     const bf = ctx.createLinearGradient(barX, 0, barX + fillW, 0);
-    bf.addColorStop(0, '#1d4ed8'); bf.addColorStop(1, '#38bdf8');
+    bf.addColorStop(0, '#1a40c0'); bf.addColorStop(1, '#00d4e8');
     ctx.save();
-    ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 10;
+    ctx.shadowColor = '#00d4e8'; ctx.shadowBlur = 12;
     ctx.fillStyle = bf;
-    roundRect(ctx, barX, barY, fillW, barH, barRadius); ctx.fill();
+    roundRect(ctx, barX, barY, fillW, barH, barR); ctx.fill();
     ctx.restore();
-    // Text inside bar — "level 69 - 69%" like Abel
+    // Text inside bar
     ctx.save();
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12px "Segoe UI", Arial, sans-serif';
+    ctx.font = 'bold 13px "Segoe UI", Arial, sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
+    ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 5;
     ctx.fillText('level 69  -  69%', barX + barW / 2, barY + barH / 2);
     ctx.restore();
 
-    // ── 11. Bottom badges (like Abel) ────────────────────────────────────────
-    // XPIDER badge — plain outlined, like Abel's STUDENT
+    // ── 9. XPIDER badge — bottom left like "STUDENT" ────────────────────────
     ctx.save();
-    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    roundRect(ctx, 22, 242, 80, 26, 4); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = VALUE_CLR; ctx.lineWidth = 1.8;
+    ctx.fillStyle   = 'rgba(0,20,30,0.60)';
+    roundRect(ctx, 18, 242, 84, 28, 5); ctx.fill(); ctx.stroke();
     ctx.restore();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 11px "Courier New", monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('XPIDER', 62, 259);
+    ctx.save();
+    ctx.fillStyle = VALUE_CLR;
+    ctx.font = 'bold 12px "Courier New", monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('XPIDER', 60, 256);
+    ctx.restore();
 
-    // 2205 IITM — large monospace right side like Abel's 1337
+    // ── 10. 2205 + IITM logo — bottom right like "1337 42 NETWORK" ───────────
     ctx.save();
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px "Courier New", monospace';
-    ctx.textAlign = 'right';
-    ctx.letterSpacing = '4px';
-    ctx.fillText('2205', W - 22, 260);
-    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 24px "Courier New", monospace';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText('2205', W - 90, 268);
+    ctx.restore();
+    // IITM logo circle
+    if (logo) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(W - 64, 257, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+      ctx.clip();
+      ctx.drawImage(logo, W - 80, 241, 32, 32);
+      ctx.restore();
+    }
+    ctx.save();
+    ctx.fillStyle = VALUE_CLR;
     ctx.font = 'bold 10px "Courier New", monospace';
-    ctx.fillText('I  I  T  M', W - 22, 274);
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText('I  I  T  M', W - 44, 257);
     ctx.restore();
-
-    // ── 12. No card border (clean look) ──────────────────────────────────────
 
     // Add frame
     encoder.addFrame(ctx);
