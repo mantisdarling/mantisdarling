@@ -46,12 +46,10 @@
 
   <!-- Top Right Logo Container (White circle behind it) -->
   <circle cx="490" cy="45" r="23" fill="#ffffff"/>
-  <!-- Image loads from local repo. User must upload iitm.png -->
-  <image href="./iitm.png" x="467" y="22" width="46" height="46" clip-path="url(#logo-clip)" preserveAspectRatio="xMidYMid slice"/>
+  <image href="./iitm.svg" x="467" y="22" width="46" height="46" clip-path="url(#logo-clip)" preserveAspectRatio="xMidYMid slice"/>
 
   <!-- Profile Picture Container -->
   <rect x="30" y="75" width="90" height="90" rx="15" fill="#1e293b"/>
-  <!-- Image loads from local repo. User must upload profile.png -->
   <image href="./profile.png" x="30" y="75" width="90" height="90" clip-path="url(#profile-clip)" preserveAspectRatio="xMidYMid slice"/>
 
   <!-- User Details -->
