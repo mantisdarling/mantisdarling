@@ -191,18 +191,18 @@ async function generateCard() {
     ctx.fillText("mantisdarling's Profile", 18, 32);
     ctx.restore();
 
-    // ── 5. IITM badge — top right (like UM6P badge in screenshot) ────────────
-    const bdgW = 58, bdgH = 24, bdgX = W - bdgW - 14, bdgY = 12;
+    // ── 5. IITM logo — top right circular (like before) ──────────────────────────
+    const lx = W - 42, ly = 40, lr = 30;
     ctx.save();
-    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
-    ctx.fillStyle   = 'rgba(0,0,0,0.55)';
-    roundRect(ctx, bdgX, bdgY, bdgW, bdgH, 5);
-    ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 13px "Courier New", monospace';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('IITM', bdgX + bdgW / 2, bdgY + bdgH / 2);
+    ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
+    if (logo) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(lx, ly, lr, 0, Math.PI * 2); ctx.clip();
+      ctx.drawImage(logo, lx - lr, ly - lr, lr * 2, lr * 2);
+      ctx.restore();
+    }
 
     // ── 6. Avatar — square rounded, left side below title ────────────────────
     const avX = 18, avY = 46, avW = 100, avH = 130, avR = 8;
@@ -286,27 +286,15 @@ async function generateCard() {
     ctx.fillText('XPIDER', 60, 256);
     ctx.restore();
 
-    // ── 10. 2205 + IITM logo — bottom right like "1337 42 NETWORK" ───────────
+    // ── 10. 2205 + IITM — bottom right ──────────────────────────────────────────
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 24px "Courier New", monospace';
     ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
-    ctx.fillText('2205', W - 90, 268);
-    ctx.restore();
-    // IITM logo circle
-    if (logo) {
-      ctx.save();
-      ctx.beginPath(); ctx.arc(W - 64, 257, 16, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff'; ctx.fill();
-      ctx.clip();
-      ctx.drawImage(logo, W - 80, 241, 32, 32);
-      ctx.restore();
-    }
-    ctx.save();
+    ctx.fillText('2205', W - 22, 268);
     ctx.fillStyle = VALUE_CLR;
     ctx.font = 'bold 10px "Courier New", monospace';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText('I  I  T  M', W - 44, 257);
+    ctx.fillText('I  I  T  M', W - 22, 280);
     ctx.restore();
 
     // Add frame
