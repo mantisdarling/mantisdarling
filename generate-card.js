@@ -213,73 +213,92 @@ async function generateCard() {
       ctx.restore();
     }
 
-    // ── 7. Name ──────────────────────────────────────────────────────────────
+    // ── 7. Title ──────────────────────────────────────────────────────────────
     ctx.save();
-    ctx.shadowColor = '#cc44ff'; ctx.shadowBlur = 14;
     ctx.fillStyle   = '#ffffff';
-    ctx.font        = 'bold 26px "Segoe UI", Arial, sans-serif';
+    ctx.font        = 'bold 18px "Segoe UI", Arial, sans-serif';
     ctx.textAlign   = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillText('mantis\'s Profile', 120, 58);
+    ctx.shadowColor = 'rgba(200,200,255,0.6)'; ctx.shadowBlur = 8;
+    ctx.fillText("mantisdarling's Profile", 120, 50);
     ctx.restore();
 
-    // ── 8. Details ───────────────────────────────────────────────────────────
+    // ── 8. Details (label: value format like Abel) ──────────────────────────
+    const LABEL_X = 120;
+    const VALUE_X = 200;
     const rows = [
-      { label: 'name',    value: 'Mantis',                  color: '#ffffff' },
-      { label: 'cursus',  value: 'AI / CyberSec',           color: '#00eeff' },
-      { label: 'grade',   value: 'Sensei',                  color: '#00eeff' },
-      { label: 'connect', value: 'bsky.app/@mantisdarling', color: '#cc88ff' },
+      { label: 'name:',    value: 'Mantis',                  color: '#ffffff' },
+      { label: 'cursus:',  value: 'AI / CyberSec',           color: '#38bdf8' },
+      { label: 'grade:',   value: 'Sensei',                  color: '#38bdf8' },
+      { label: 'connect:', value: 'bsky.app/@mantisdarling', color: '#818cf8' },
     ];
     rows.forEach((r, i) => {
-      const y = 76 + i * 26;
-      ctx.font      = 'bold 13px "Segoe UI", Arial, sans-serif';
+      const y = 72 + i * 28;
+      // Label
+      ctx.font      = '12px "Segoe UI", Arial, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#aaaacc';
-      ctx.font = '12px "Segoe UI", Arial, sans-serif';
-      ctx.fillText(r.label + ':', 120, y);
+      ctx.fillStyle = '#94a3b8';
+      ctx.shadowBlur = 0;
+      ctx.fillText(r.label, LABEL_X, y);
+      // Value
       ctx.save();
+      ctx.font      = 'bold 13px "Segoe UI", Arial, sans-serif';
       ctx.fillStyle = r.color;
-      ctx.shadowColor = r.color; ctx.shadowBlur = 8;
-      ctx.font = 'bold 13px "Segoe UI", Arial, sans-serif';
-      ctx.fillText(r.value, 185, y);
+      ctx.shadowColor = r.color;
+      ctx.shadowBlur  = r.label === 'name:' ? 0 : 10;
+      ctx.fillText(r.value, VALUE_X, y);
       ctx.restore();
     });
 
     // ── 9. Divider ────────────────────────────────────────────────────────────
     const div = ctx.createLinearGradient(22, 0, W - 22, 0);
-    div.addColorStop(0, BORDER_COLOR); div.addColorStop(1, 'rgba(136,68,255,0)');
-    ctx.fillStyle = div; ctx.fillRect(22, 185, W - 44, 1);
+    div.addColorStop(0, '#38bdf8'); div.addColorStop(0.5, '#818cf8'); div.addColorStop(1, 'rgba(56,189,248,0)');
+    ctx.fillStyle = div; ctx.fillRect(22, 190, W - 44, 1);
 
-    // ── 10. Progress ─────────────────────────────────────────────────────────
-    ctx.fillStyle = '#9ca3af'; ctx.font = '10px "Segoe UI", Arial';
-    ctx.textAlign = 'left';  ctx.fillText('LEVEL PROGRESS', 22, 205);
-    ctx.fillStyle = BORDER_COLOR; ctx.textAlign = 'right'; ctx.fillText('69%', W - 22, 205);
-
+    // ── 10. Progress bar (text INSIDE like Abel) ──────────────────────────────
+    const barX = 22, barY = 202, barW = W - 44, barH = 26, barRadius = 5;
     // Track
-    ctx.fillStyle = 'rgba(0,0,0,0.5)'; roundRect(ctx, 22, 212, W - 44, 9, 4); ctx.fill();
-    // Fill
-    const bf = ctx.createLinearGradient(22, 0, 22 + (W - 44) * 0.69, 0);
-    bf.addColorStop(0, '#440088'); bf.addColorStop(1, BORDER_COLOR);
-    ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 8;
-    ctx.fillStyle = bf; roundRect(ctx, 22, 212, (W - 44) * 0.69, 9, 4); ctx.fill();
-    ctx.restore();
-
-    // ── 11. Badges ───────────────────────────────────────────────────────────
-    // XPIDER
+    ctx.fillStyle = 'rgba(15,15,30,0.75)';
+    roundRect(ctx, barX, barY, barW, barH, barRadius); ctx.fill();
+    // Fill 69%
+    const fillW = barW * 0.69;
+    const bf = ctx.createLinearGradient(barX, 0, barX + fillW, 0);
+    bf.addColorStop(0, '#1d4ed8'); bf.addColorStop(1, '#38bdf8');
     ctx.save();
-    ctx.strokeStyle = BORDER_COLOR; ctx.lineWidth = 1.5;
-    ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 8;
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    roundRect(ctx, 22, 252, 78, 28, 5); ctx.fill(); ctx.stroke();
+    ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 10;
+    ctx.fillStyle = bf;
+    roundRect(ctx, barX, barY, fillW, barH, barRadius); ctx.fill();
     ctx.restore();
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px "Segoe UI", Arial';
-    ctx.textAlign = 'center'; ctx.fillText('XPIDER', 61, 270);
+    // Text inside bar — "level 69 - 69%" like Abel
+    ctx.save();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 12px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
+    ctx.fillText('level 69  -  69%', barX + barW / 2, barY + barH / 2);
+    ctx.restore();
 
-    // 2205 IITM
-    ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 6;
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 14px "Courier New", monospace';
-    ctx.textAlign = 'right'; ctx.fillText('2205', W - 22, 262);
-    ctx.fillStyle = BORDER_COLOR; ctx.font = '10px "Courier New", monospace';
-    ctx.fillText('IITM', W - 22, 276);
+    // ── 11. Bottom badges (like Abel) ────────────────────────────────────────
+    // XPIDER badge — plain outlined, like Abel's STUDENT
+    ctx.save();
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    roundRect(ctx, 22, 242, 80, 26, 4); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 11px "Courier New", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('XPIDER', 62, 259);
+
+    // 2205 IITM — large monospace right side like Abel's 1337
+    ctx.save();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px "Courier New", monospace';
+    ctx.textAlign = 'right';
+    ctx.letterSpacing = '4px';
+    ctx.fillText('2205', W - 22, 260);
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 10px "Courier New", monospace';
+    ctx.fillText('I  I  T  M', W - 22, 274);
     ctx.restore();
 
     // ── 12. No card border (clean look) ──────────────────────────────────────
