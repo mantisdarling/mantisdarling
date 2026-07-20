@@ -1,34 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 150" width="800" height="150">
   <style>
-    .text { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; font-size: 14px; fill: #f8f8f2; }
-    .prompt { fill: #f1fa8c; font-weight: bold; }
-    .comment { fill: #6272a4; font-style: italic; }
+    .text { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; font-size: 16px; fill: #ffffff; }
+    .prompt { fill: #00ff00; font-weight: bold; }
+    .comment { fill: #00ffff; font-weight: bold; font-style: italic; }
     
-    .line1 { opacity: 0; animation: show 0.1s forwards 0.5s; }
-    .line2 { opacity: 0; animation: show 0.1s forwards 1.0s; }
-    .line3 { opacity: 0; animation: show 0.1s forwards 1.5s; }
-    .line4 { opacity: 0; animation: show 0.1s forwards 2.0s; }
-    .line5 { opacity: 0; animation: show 0.1s forwards 2.5s; }
-    .line6 { opacity: 0; animation: show 0.1s forwards 3.0s; }
-    .line7 { opacity: 0; animation: show 0.1s forwards 3.5s; }
+    .p1-anim { animation: p1 10s infinite; }
+    .t1-anim { animation: t1 10s linear infinite; }
     
-    @keyframes show {
-      to { opacity: 1; }
+    .p2-anim { animation: p2 10s infinite; }
+    .t2-anim { animation: t2 10s linear infinite; }
+    
+    @keyframes p1 {
+      0%, 4.99% { opacity: 0; }
+      5%, 94.99% { opacity: 1; }
+      95%, 100% { opacity: 0; }
+    }
+    
+    @keyframes t1 {
+      0%, 5% { width: 0; }
+      20%, 80% { width: 220px; }
+      95%, 100% { width: 0; }
+    }
+    
+    @keyframes p2 {
+      0%, 24.99% { opacity: 0; }
+      25%, 79.99% { opacity: 1; }
+      80%, 100% { opacity: 0; }
+    }
+    
+    @keyframes t2 {
+      0%, 25% { width: 0; }
+      40%, 65% { width: 300px; }
+      80%, 100% { width: 0; }
     }
   </style>
-  <rect width="800" height="250" rx="8" fill="#282a36" />
+
+  <rect width="800" height="150" rx="8" fill="#000000" />
   
   <circle cx="20" cy="20" r="6" fill="#ff5f56" />
   <circle cx="40" cy="20" r="6" fill="#ffbd2e" />
   <circle cx="60" cy="20" r="6" fill="#27c93f" />
   
+  <defs>
+    <clipPath id="cp1">
+      <rect x="180" y="40" height="30" class="t1-anim" />
+    </clipPath>
+    <clipPath id="cp2">
+      <rect x="180" y="75" height="30" class="t2-anim" />
+    </clipPath>
+  </defs>
+
   <g class="text">
-    <text x="20" y="60" class="line1"><tspan class="prompt">mantisdarling $</tspan> cd ~</text>
-    <text x="20" y="85" class="line2"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># CS undergrad exploring where AI, security, and policy collide.</tspan></text>
-    <text x="20" y="110" class="line3"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># I'm a Computer Science student at IIT Madras, building at the</tspan></text>
-    <text x="20" y="135" class="line4"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># intersection of AI systems, cybersecurity, and the policy</tspan></text>
-    <text x="20" y="160" class="line5"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># questions neither field likes to answer.</tspan></text>
-    <text x="20" y="185" class="line6"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># Most of what I build ends up here sooner or later,</tspan></text>
-    <text x="20" y="210" class="line7"><tspan class="prompt">mantisdarling $</tspan> <tspan class="comment"># this is essentially my open notebook.</tspan></text>
+    <text x="20" y="60" class="p1-anim"><tspan class="prompt">mantisdarling $</tspan></text>
+    <text x="180" y="60" clip-path="url(#cp1)" class="comment"># Hey, I'm Mantis,</text>
+    
+    <text x="20" y="95" class="p2-anim"><tspan class="prompt">mantisdarling $</tspan></text>
+    <text x="180" y="95" clip-path="url(#cp2)" class="comment"># I go deep. Then I build.</text>
   </g>
 </svg>
