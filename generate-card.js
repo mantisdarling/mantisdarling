@@ -127,7 +127,11 @@ async function generateCard() {
   // Pre-load images
   let bg, avatar, logo;
   try { bg     = await loadImage(path.join(__dirname, 'bg.jpg'));      } catch(e) { bg = null; }
-  try { avatar = await loadImage(path.join(__dirname, 'profile.png')); } catch(e) { avatar = null; }
+  try { avatar = await loadImage(path.join(__dirname, 'avatar.jpg')); } catch(e) {
+    try { avatar = await loadImage(path.join(__dirname, 'avatar.png')); } catch(e2) {
+      try { avatar = await loadImage(path.join(__dirname, 'profile.png')); } catch(e3) { avatar = null; }
+    }
+  }
   try { logo   = await loadImage(path.join(__dirname, 'iitm.svg'));    } catch(e) { logo = null; }
 
   // Setup GIF encoder
@@ -170,27 +174,24 @@ async function generateCard() {
     // ── 3. Animated spider web ───────────────────────────────────────────────
     drawWeb(ctx, f);
 
-    // ── 4. Top & bottom accent bars (CYAN border color) ─────────────────────
-    ctx.fillStyle = BORDER_COLOR;
-    ctx.shadowColor = BORDER_COLOR;
-    ctx.shadowBlur  = 8;
-    roundRect(ctx, 0, 0, W, 4, 0); ctx.fill();
-    roundRect(ctx, 0, H - 4, W, 4, 0); ctx.fill();
+    // ── 4. No border bars — clean card like Abel's ──────────────────────────
     ctx.shadowBlur = 0;
 
-    // ── 5. Avatar ────────────────────────────────────────────────────────────
-    const ax = 55, ay = 105, ar = 50;
-    ctx.save();
-    ctx.shadowColor = BORDER_COLOR;
-    ctx.shadowBlur  = 16;
-    ctx.strokeStyle = BORDER_COLOR;
-    ctx.lineWidth   = 2.5;
-    ctx.beginPath(); ctx.arc(ax, ay, ar + 4, 0, Math.PI * 2); ctx.stroke();
-    ctx.restore();
+    // ── 5. Avatar (rounded square like Abel's) ───────────────────────────────
+    const avX = 18, avY = 40, avW = 90, avH = 110, avR = 10;
     if (avatar) {
       ctx.save();
-      ctx.beginPath(); ctx.arc(ax, ay, ar, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(avatar, ax - ar, ay - ar, ar * 2, ar * 2);
+      roundRect(ctx, avX, avY, avW, avH, avR);
+      ctx.clip();
+      ctx.drawImage(avatar, avX, avY, avW, avH);
+      ctx.restore();
+    } else {
+      ctx.save();
+      ctx.fillStyle = '#1a0020';
+      roundRect(ctx, avX, avY, avW, avH, avR); ctx.fill();
+      ctx.fillStyle = BORDER_COLOR;
+      ctx.font = 'bold 36px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('M', avX + avW/2, avY + avH/2);
       ctx.restore();
     }
 
@@ -214,33 +215,33 @@ async function generateCard() {
 
     // ── 7. Name ──────────────────────────────────────────────────────────────
     ctx.save();
-    ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 10;
+    ctx.shadowColor = '#cc44ff'; ctx.shadowBlur = 14;
     ctx.fillStyle   = '#ffffff';
-    ctx.font        = 'bold 24px "Segoe UI", Arial, sans-serif';
+    ctx.font        = 'bold 26px "Segoe UI", Arial, sans-serif';
     ctx.textAlign   = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillText('Mantis', 115, 76);
+    ctx.fillText('mantis\'s Profile', 120, 58);
     ctx.restore();
-
-    // Separator under name
-    const sep = ctx.createLinearGradient(115, 0, 310, 0);
-    sep.addColorStop(0, BORDER_COLOR); sep.addColorStop(1, 'rgba(136,68,255,0)');
-    ctx.fillStyle = sep; ctx.fillRect(115, 82, 190, 1.5);
 
     // ── 8. Details ───────────────────────────────────────────────────────────
     const rows = [
-      { label: 'cursus',  value: 'AI / CyberSec',           color: '#f1f5f9' },
-      { label: 'grade',   value: 'Sensei',                  color: '#f1f5f9' },
-      { label: 'connect', value: 'bsky.app/@mantisdarling', color: '#aa88ff' },
+      { label: 'name',    value: 'Mantis',                  color: '#ffffff' },
+      { label: 'cursus',  value: 'AI / CyberSec',           color: '#00eeff' },
+      { label: 'grade',   value: 'Sensei',                  color: '#00eeff' },
+      { label: 'connect', value: 'bsky.app/@mantisdarling', color: '#cc88ff' },
     ];
     rows.forEach((r, i) => {
-      const y = 96 + i * 24;
-      ctx.font      = '12px "Segoe UI", Arial, sans-serif';
+      const y = 76 + i * 26;
+      ctx.font      = 'bold 13px "Segoe UI", Arial, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#9ca3af'; ctx.fillText(r.label, 115, y);
+      ctx.fillStyle = '#aaaacc';
+      ctx.font = '12px "Segoe UI", Arial, sans-serif';
+      ctx.fillText(r.label + ':', 120, y);
+      ctx.save();
       ctx.fillStyle = r.color;
-      if (r.label === 'connect') { ctx.save(); ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 6; }
-      ctx.fillText(r.value, 178, y);
-      if (r.label === 'connect') ctx.restore();
+      ctx.shadowColor = r.color; ctx.shadowBlur = 8;
+      ctx.font = 'bold 13px "Segoe UI", Arial, sans-serif';
+      ctx.fillText(r.value, 185, y);
+      ctx.restore();
     });
 
     // ── 9. Divider ────────────────────────────────────────────────────────────
@@ -281,12 +282,7 @@ async function generateCard() {
     ctx.fillText('IITM', W - 22, 276);
     ctx.restore();
 
-    // ── 12. Card border ───────────────────────────────────────────────────────
-    ctx.save();
-    ctx.strokeStyle = BORDER_COLOR; ctx.lineWidth = 1.5;
-    ctx.shadowColor = BORDER_COLOR; ctx.shadowBlur = 6;
-    roundRect(ctx, 0, 0, W, H, 16); ctx.stroke();
-    ctx.restore();
+    // ── 12. No card border (clean look) ──────────────────────────────────────
 
     // Add frame
     encoder.addFrame(ctx);
