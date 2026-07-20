@@ -3,10 +3,11 @@ const GIFEncoder = require('gif-encoder-2');
 const fs = require('fs');
 const path = require('path');
 
-const W = 580;
-const H = 300;
-const FRAMES = 30;
-const FRAME_DELAY = 8;
+const W = 580;           // logical width
+const H = 300;           // logical height
+const SCALE = 2;         // render at 2x for retina sharpness
+const FRAMES = 20;       // fewer frames = smaller file
+const FRAME_DELAY = 12;  // 120ms per frame = smooth ~8fps loop
 const BORDER_COLOR = '#8844ff';
 
 // Spider web center (right side, not covering text)
@@ -134,17 +135,23 @@ async function generateCard() {
   }
   try { logo   = await loadImage(path.join(__dirname, 'iitm.svg'));    } catch(e) { logo = null; }
 
-  // Setup GIF encoder
-  const encoder = new GIFEncoder(W, H, 'neuquant', true);
+  // Setup GIF encoder at 2x resolution
+  const encoder = new GIFEncoder(W * SCALE, H * SCALE, 'octree', true);
   const stream  = fs.createWriteStream(path.join(__dirname, 'card.gif'));
   encoder.createReadStream().pipe(stream);
   encoder.start();
-  encoder.setRepeat(0);    // loop forever
-  encoder.setDelay(FRAME_DELAY * 10); // ms
-  encoder.setQuality(10);
+  encoder.setRepeat(0);
+  encoder.setDelay(FRAME_DELAY * 10);
+  encoder.setQuality(1);  // best quality
 
-  const canvas = createCanvas(W, H);
+  const canvas = createCanvas(W * SCALE, H * SCALE);
   const ctx    = canvas.getContext('2d');
+  // Scale all drawing to 2x
+  ctx.scale(SCALE, SCALE);
+  // Enable high quality image smoothing
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.antialias = 'subpixel';
 
   for (let f = 0; f < FRAMES; f++) {
     ctx.clearRect(0, 0, W, H);
