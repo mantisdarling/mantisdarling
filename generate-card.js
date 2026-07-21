@@ -27,55 +27,88 @@ function getWebPoints() {
   return points;
 }
 
-function drawWeb(ctx, frame) {
-  const cx = WEB_CX, cy = WEB_CY;
-  const spokes = 16;
-  const rings  = 7;
-  const maxR   = MAX_R;
-  // Slow rotation — one full turn every 120 frames
-  const rotation = (frame / 120) * Math.PI * 2;
+function drawWeb(ctx, dashOffset) {
+  const spokes = getWebPoints();
+  const ringRadii = Array.from({ length: RINGS }, (_, i) => MAX_R * ((i + 1) / RINGS));
 
   ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(rotation);
+  ctx.lineJoin = 'round';
+  ctx.lineCap  = 'round';
 
-  // ── Spokes ────────────────────────────────────────────────────────────────
-  for (let s = 0; s < spokes; s++) {
-    const angle = (s / spokes) * Math.PI * 2;
-    const opacity = 0.18 + 0.06 * Math.sin(angle + frame * 0.08);
+  // ── Draw RINGS (concentric arcs) ──────────────────────────────────────────
+  ringRadii.forEach((r, ri) => {
+    const alpha = 0.18 + ri * 0.06;
+    const dashLen = 10 + ri * 4;
+    const gap     = 8  + ri * 3;
+    const period  = dashLen + gap;
+    // Offset advances each frame
+    const offset = (dashOffset * 2.5) % period;
+
+    // Outer glow
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(Math.cos(angle) * maxR, Math.sin(angle) * maxR);
-    ctx.setLineDash([]);
-    ctx.strokeStyle = `rgba(255, 80, 80, ${opacity})`;
-    ctx.lineWidth   = 3;
-    ctx.shadowColor = '#ff2020';
+    ctx.arc(WEB_CX, WEB_CY, r, 0, Math.PI * 2);
+    ctx.setLineDash([dashLen, gap]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeStyle = `rgba(255, 20, 20, ${alpha * 0.4})`;
+    ctx.lineWidth   = 6;
+    ctx.shadowColor = '#ff0000';
+    ctx.shadowBlur  = 14;
+    ctx.stroke();
+
+    // Core line
+    ctx.beginPath();
+    ctx.arc(WEB_CX, WEB_CY, r, 0, Math.PI * 2);
+    ctx.setLineDash([dashLen, gap]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeStyle = `rgba(255, 60, 60, ${alpha + 0.25})`;
+    ctx.lineWidth   = 1.5;
+    ctx.shadowBlur  = 6;
+    ctx.stroke();
+  });
+
+  // ── Draw SPOKES (radial lines) ────────────────────────────────────────────
+  spokes.forEach((sp, si) => {
+    const period = 28;
+    const offset = (dashOffset * 1.8 + si * 3) % period;
+
+    // Outer glow
+    ctx.beginPath();
+    ctx.moveTo(WEB_CX, WEB_CY);
+    ctx.lineTo(WEB_CX + sp.cos * MAX_R, WEB_CY + sp.sin * MAX_R);
+    ctx.setLineDash([14, 14]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeStyle = 'rgba(255, 30, 30, 0.20)';
+    ctx.lineWidth   = 5;
+    ctx.shadowColor = '#ff0000';
     ctx.shadowBlur  = 10;
     ctx.stroke();
-  }
 
-  // ── Rings (concentric) ────────────────────────────────────────────────────
-  for (let r = 1; r <= rings; r++) {
-    const radius  = (r / rings) * maxR;
-    const opacity = 0.10 + (r / rings) * 0.20;
-    // Pulse: slightly vary radius per frame for shimmer
-    const pulse   = radius + Math.sin(frame * 0.15 + r) * 1.5;
-
+    // Core
     ctx.beginPath();
-    ctx.arc(0, 0, pulse, 0, Math.PI * 2);
-    ctx.setLineDash([]);
-    ctx.strokeStyle = `rgba(255, 70, 70, ${opacity})`;
-    ctx.lineWidth   = 2.5;
-    ctx.shadowColor = '#ff1010';
-    ctx.shadowBlur  = 10;
+    ctx.moveTo(WEB_CX, WEB_CY);
+    ctx.lineTo(WEB_CX + sp.cos * MAX_R, WEB_CY + sp.sin * MAX_R);
+    ctx.setLineDash([14, 14]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeStyle = 'rgba(255, 80, 80, 0.55)';
+    ctx.lineWidth   = 1.2;
+    ctx.shadowBlur  = 5;
     ctx.stroke();
-  }
+  });
 
+  // Reset dash
+  ctx.setLineDash([]);
   ctx.shadowBlur = 0;
+
+  // ── Center dot ────────────────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.arc(WEB_CX, WEB_CY, 4, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255, 80, 80, 0.7)';
+  ctx.shadowColor = '#ff0000';
+  ctx.shadowBlur  = 12;
+  ctx.fill();
+
   ctx.restore();
 }
-
-
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
