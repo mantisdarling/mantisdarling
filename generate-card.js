@@ -48,9 +48,9 @@ function drawWeb(ctx, frame) {
     ctx.lineTo(Math.cos(angle) * maxR, Math.sin(angle) * maxR);
     ctx.setLineDash([]);
     ctx.strokeStyle = `rgba(255, 80, 80, ${opacity})`;
-    ctx.lineWidth   = 0.7;
+    ctx.lineWidth   = 3;
     ctx.shadowColor = '#ff2020';
-    ctx.shadowBlur  = 4;
+    ctx.shadowBlur  = 10;
     ctx.stroke();
   }
 
@@ -65,9 +65,9 @@ function drawWeb(ctx, frame) {
     ctx.arc(0, 0, pulse, 0, Math.PI * 2);
     ctx.setLineDash([]);
     ctx.strokeStyle = `rgba(255, 70, 70, ${opacity})`;
-    ctx.lineWidth   = 0.6;
+    ctx.lineWidth   = 2.5;
     ctx.shadowColor = '#ff1010';
-    ctx.shadowBlur  = 3;
+    ctx.shadowBlur  = 10;
     ctx.stroke();
   }
 
