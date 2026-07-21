@@ -170,9 +170,10 @@ async function generateCard() {
 
     // ── 2. Dark overlay ─────────────────────────────────────────────────────
     const overlay = ctx.createLinearGradient(0, 0, W, 0);
-    overlay.addColorStop(0,    'rgba(0,0,0,0.82)');
-    overlay.addColorStop(0.55, 'rgba(0,0,0,0.60)');
-    overlay.addColorStop(1,    'rgba(0,0,0,0.18)');
+    overlay.addColorStop(0,    'rgba(0,0,0,0.80)');  // dark left (text area)
+    overlay.addColorStop(0.40, 'rgba(0,0,0,0.50)');  // medium middle
+    overlay.addColorStop(0.65, 'rgba(0,0,0,0.20)');  // light - spider starts showing
+    overlay.addColorStop(1,    'rgba(0,0,0,0.00)');  // fully visible right
     ctx.fillStyle = overlay;
     roundRect(ctx, 0, 0, W, H, 14); ctx.fill();
 
