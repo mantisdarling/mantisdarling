@@ -41,9 +41,9 @@ I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/
   <img width="12" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" height="30" alt="pandas logo"  />
   <img width="12" />
-  <img src="https://cdn.simpleicons.org/matplotlib/11557C" height="30" alt="matplotlib logo"  />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" height="30" alt="matplotlib logo"  />
   <img width="12" />
-  <img src="https://cdn.simpleicons.org/seaborn/3776AB" height="30" alt="seaborn logo"  />
+  <img src="https://seaborn.pydata.org/_images/logo-mark-lightbg.svg" height="30" alt="seaborn logo"  />
   <img width="12" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" height="30" alt="scikitlearn logo"  />
   <img width="12" />
