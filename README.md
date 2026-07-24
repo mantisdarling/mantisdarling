@@ -37,12 +37,5 @@ I'm a Computer Science student at <a href="https://www.iitm.ac.in/the-institute/
 
 ---
 
-## `./xpider_card`
-
-<p align="center">
-  <img src="./xpider14.gif" width="580" alt="Xpider Card" />
-</p>
-
----
 
 > *"The best way to understand a system is to try to break it."*
